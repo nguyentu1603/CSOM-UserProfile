@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Search.Query;
 using Microsoft.SharePoint.Client.UserProfiles;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,9 @@ namespace ConsoleCSOM
                     ctx.Load(ctx.Web);
                     await ctx.ExecuteQueryAsync();
                     Console.WriteLine($"Site {ctx.Web.Title}");
-                    await UpdatePropertyForUser(ctx, "Precio-Nickname", new List<string> { "tu.nguyen.dev@devtusturu.onmicrosoft.com", "tu.nguyen.tester@devtusturu.onmicrosoft.com", "tu.nguyen.anh@devtusturu.onmicrosoft.com" });
+                    //await UpdatePropertyForUser(ctx, "Precio-Nickname", new List<string> { "tu.nguyen.dev@devtusturu.onmicrosoft.com", "tu.nguyen.tester@devtusturu.onmicrosoft.com", "tu.nguyen.anh@devtusturu.onmicrosoft.com" });
                     //await LoadUser(ctx);
+                    await KeywordQuery(ctx);
 
                 }
                 Console.WriteLine($"Press Any Key To Stop!");
@@ -101,6 +103,28 @@ namespace ConsoleCSOM
                         Console.WriteLine(ex.Message);
                     }
                 }
+            }
+        }
+
+        private static async Task KeywordQuery(ClientContext ctx)
+        {
+            KeywordQuery keywordQuery = new KeywordQuery(ctx);
+            keywordQuery.QueryText = "Tú";
+            keywordQuery.SourceId = new Guid("b09a7990-05ea-4af9-81ef-edfab16c4e31");
+            keywordQuery.RowLimit = 10;
+            keywordQuery.TrimDuplicates = false;
+            var searchExecutor = new SearchExecutor(ctx);
+            var results = searchExecutor.ExecuteQuery(keywordQuery);
+            ctx.ExecuteQuery();
+            foreach (var item in results.Value[0].ResultRows)
+            {
+                Console.WriteLine(
+                   $"Account Name: {item["AccountName"]}\n" +
+                   $"Name: {item["Title"]}\n" + 
+                   $"JobTitle: {item["JobTitle"]}\n" +
+                   $"Skills: {item["Skills"]}\n" +
+                   $"WorkEmail: {item["WorkEmail"]}\n"
+                   );
             }
         }
     }
