@@ -27,9 +27,9 @@ namespace ConsoleCSOM
                     ctx.Load(ctx.Web);
                     await ctx.ExecuteQueryAsync();
                     Console.WriteLine($"Site {ctx.Web.Title}");
-                    //await UpdatePropertyForUser(ctx, "Precio-Nickname", new List<string> { "tu.nguyen.dev@devtusturu.onmicrosoft.com", "tu.nguyen.tester@devtusturu.onmicrosoft.com", "tu.nguyen.anh@devtusturu.onmicrosoft.com" });
-                    //await LoadUser(ctx);
-                    await KeywordQuery(ctx);
+                    await UpdatePropertyForUser(ctx, "Precio-Nickname", new List<string> { "tu.nguyen.dev@devtusturu.onmicrosoft.com", "tu.nguyen.tester@devtusturu.onmicrosoft.com", "tu.nguyen.anh@devtusturu.onmicrosoft.com" });
+                    ////await LoadUser(ctx);
+                    //await KeywordQuery(ctx);
 
                 }
                 Console.WriteLine($"Press Any Key To Stop!");
